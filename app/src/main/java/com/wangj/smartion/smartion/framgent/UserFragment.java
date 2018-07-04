@@ -28,6 +28,8 @@ public class UserFragment extends BaseFragemnt {
 
     @Override
     protected void initData() {
+
+
         burImage = view.findViewById(R.id.user_back);
         avatarImageVIew = view.findViewById(R.id.user_head);
 

@@ -71,7 +71,6 @@ public class GsonUtils {
         List<Map<String,T>> list = null;
         if (mGson !=null){
             list = mGson.fromJson(gsonString,new TypeToken<List<Map<String,T>>>(){}.getType());
-
         }
         return list;
     }
