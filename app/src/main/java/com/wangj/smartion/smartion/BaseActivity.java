@@ -19,11 +19,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
-
-        //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
 
         //初始化视图
         initView();
@@ -37,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void setStatusBar() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            final ViewGroup liner_bar = findViewById(R.id.rl_title);
+            final ViewGroup liner_bar = findViewById(R.id.title);
             final int statusHeight = getstatusBarheight();
             liner_bar.post(new Runnable() {
                 @Override
@@ -62,12 +64,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected abstract void initData();
 
-    /**
-     * 返回布局的方法
-     *
-     * @return
-     */
-    protected abstract int getLayout();
 
     protected int getstatusBarheight() {
         try {
@@ -87,4 +83,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return 0;
     }
+
+    /**
+     * 获取状态栏的高度
+     * @return
+     */
+    protected int getStatusBarHeight(){
+        try
+        {
+            Class<?> c=Class.forName("com.android.internal.R$dimen");
+            Object obj=c.newInstance();
+            Field field=c.getField("status_bar_height");
+            int x=Integer.parseInt(field.get(obj).toString());
+            return  getResources().getDimensionPixelSize(x);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    protected  abstract int getLayout();
 }
